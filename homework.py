@@ -27,21 +27,20 @@ HOMEWORK_VERDICTS = {
 
 logging.basicConfig(
     level=logging.DEBUG,
-    filename='program.log', 
+    filename='program.log',
     format='%(asctime)s, %(levelname)s, %(message)s'
 )
 
 
 def check_tokens():
-    '''Проверка наличия токенов'''
-
+    """Проверка наличия токенов."""
     if PRACTICUM_TOKEN and TELEGRAM_TOKEN and TELEGRAM_CHAT_ID:
         return True
     return False
 
 
 def send_message(bot, message):
-    '''Отправка сообщения пользователю'''
+    """Отправка сообщения пользователю."""
     try:
         logging.debug(f'Сообщение {message} успешно отправлено.')
         bot.send_message(TELEGRAM_CHAT_ID, message)
@@ -51,7 +50,7 @@ def send_message(bot, message):
 
 
 def get_api_answer(timestamp):
-    '''Получение ответа от API'''
+    """Получение ответа от API."""
     logging.info('Запрос к API')
     try:
         response = requests.get(
@@ -69,7 +68,7 @@ def get_api_answer(timestamp):
 
 
 def check_response(response):
-    '''Проверка ответа API'''
+    """Проверка ответа API."""
     logging.info('Проверка ответа API на корректность')
     if not isinstance(response, dict):
         raise TypeError('Ответ API не является словарем')
@@ -81,10 +80,8 @@ def check_response(response):
     return homeworks
 
 
-
 def parse_status(homework):
-    '''Извлекает статус домашней работы'''
-
+    """Извлекает статус домашней работы."""
     logging.info('Проводим проверки и извлекаем статус работы')
     if 'homework_name' not in homework:
         raise KeyError('Нет ключа homework_name в ответе API')
@@ -97,7 +94,7 @@ def parse_status(homework):
 
 
 def main():
-    '''Основная логика работы бота'''
+    """Основная логика работы бота."""
     if not check_tokens():
         message = 'Отсутствует токен. Бот остановлен!'
         logging.critical(message)
@@ -130,7 +127,7 @@ def main():
             logging.error(message)
         finally:
             time.sleep(RETRY_PERIOD)
-        
+
 
 if __name__ == '__main__':
     main()
