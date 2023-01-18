@@ -34,7 +34,7 @@ logging.basicConfig(
 
 def check_tokens():
     """Проверка наличия токенов."""
-    if PRACTICUM_TOKEN and TELEGRAM_TOKEN and TELEGRAM_CHAT_ID:
+    if all([PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID]):
         return True
     return False
 
@@ -44,7 +44,6 @@ def send_message(bot, message):
     try:
         logging.debug(f'Сообщение {message} успешно отправлено.')
         bot.send_message(TELEGRAM_CHAT_ID, message)
-
     except Exception as error:
         logging.error(f'Ошибка при отправке сообщения {error}')
 
@@ -76,7 +75,7 @@ def check_response(response):
         raise Exception('Нет ключа homeworks в ответе API')
     homeworks = response.get('homeworks')
     if not isinstance(homeworks, list):
-        raise TypeError('homeworks не является словарем')
+        raise TypeError('homeworks не является списком')
     return homeworks
 
 
@@ -108,7 +107,6 @@ def main():
 
     while True:
         try:
-
             response = get_api_answer(timestamp)
             timestamp = response.get(
                 'current_date', int(time.time())

@@ -1,3 +1,3 @@
 class ApiResponseError(Exception):
-    '''Код не 200'''
+    """Код ответа API не 200.""" 
     pass
